@@ -1,14 +1,4 @@
-class ModulationFunction {
-    fun pure float apply(Note n);
-}
-
-class HalfFreqModulationFunction extends ModulationFunction {
-    fun float apply(Note n) {
-        return n.note / 2;
-    }
-}
-
-class ModulatedOscillator extends UGenPreparation {
+public class ModulatedOscillator extends UGenPreparation {
     SinOsc v;
     SinOsc s;
     HalfFreqModulationFunction f @=> ModulationFunction mf;

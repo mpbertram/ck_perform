@@ -194,3 +194,231 @@ class Measure {
         }
     }
 }
+/* WaitFunction.ck */
+
+class WaitFunction {
+    fun pure void wait();
+}
+
+class WaitFullBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitFullBeat();
+    }
+}
+
+class WaitHalfBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitHalfBeat();
+    }
+}
+
+class WaitQuarterBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitQuarterBeat();
+    }
+}
+
+class WaitEighthBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitEighthBeat();
+    }
+}
+
+class WaitSixteenthBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitSixteenthBeat();
+    }
+}
+
+class WaitThirtySecondBeat extends WaitFunction {
+    MeasureListener m;
+    
+    fun void wait() {
+        m.waitThirtySecondBeat();
+    }
+}
+/* Note.ck */
+
+class Note {
+    float note;
+}
+
+class NoteDuration {
+    fun static NoteDuration fromNote(Note n, WaitFunction duringNoteWait, 
+            WaitFunction afterNoteWait) {
+        
+        NoteDuration nd;
+        n @=> nd.n;
+        duringNoteWait @=> nd.duringNoteWait;
+        afterNoteWait @=> nd.afterNoteWait;
+        
+        return nd;
+    }
+    
+    Note n;
+    WaitFunction duringNoteWait;
+    WaitFunction afterNoteWait;    
+}
+
+class Chord {
+    Note notes[];
+}
+
+class ChordDuration {
+    fun static ChordDuration fromChord(Chord c, WaitFunction duringChordWait, 
+            WaitFunction afterChordWait) {
+        
+        ChordDuration cd;
+        c @=> cd.c;
+        duringChordWait @=> cd.duringChordWait;
+        afterChordWait @=> cd.afterChordWait;
+        
+        return cd;
+    }
+
+    Chord c;
+    WaitFunction duringChordWait;
+    WaitFunction afterChordWait;
+}
+/* UGenPreparation.ck */
+
+class UGenPreparation {
+    fun pure UGen get();
+    fun pure void prepare(Note n);
+}
+/* Arpeggio.ck */
+
+class Arpeggio extends MeasureListener {
+    UGenPreparation uGen;
+    NoteDuration notes[];
+    Envelope e;
+
+    fun void onInit() {
+        uGen.get() => e => dac;
+    }
+
+    fun void onDestroy() {
+        uGen.get() =< e =< dac;
+    }
+
+    fun void perform() {
+        for (0 => int i; i < notes.cap(); ++i) {
+            notes[i] @=> NoteDuration nd;
+            
+            uGen.prepare(nd.n);
+            
+            e.keyOn();
+            nd.duringNoteWait.wait();
+            e.keyOff();
+            nd.afterNoteWait.wait();
+        }
+    }
+}
+class ModulationFunction {
+    fun pure float apply(Note n);
+}
+
+class HalfFreqModulationFunction extends ModulationFunction {
+    fun float apply(Note n) {
+        return n.note / 2;
+    }
+}
+
+class ModulatedOscillator extends UGenPreparation {
+    SinOsc v;
+    SinOsc s;
+    HalfFreqModulationFunction f @=> ModulationFunction mf;
+
+    100 => float vGain;
+    0.05 => float sGain;
+
+    fun void reset() {
+        v =< s;
+
+        2 => s.sync;
+
+        vGain => v.gain;
+        sGain => s.gain;
+
+        v => s;
+    }
+
+    fun void prepare(Note n) {
+        reset();
+
+        mf.apply(n) => v.freq;
+        n.note => s.freq;
+    }
+
+    fun UGen get() {
+        return s;
+    }
+}
+/* Harmony.ck */
+
+class Harmony extends MeasureListener {
+    UGenPreparation uGen[0];
+    ChordDuration cd;
+    Envelope e[];
+
+    fun void addUGen(UGenPreparation up) {
+        uGen.cap() => int uGenCap;
+        
+        UGenPreparation t[uGenCap + 1];
+        if (uGenCap > 0) {
+            for (0 => int i; i < uGenCap; ++i) {
+                uGen[i] @=> t[i];
+            }
+        }
+        
+        up @=> t[t.cap() - 1];
+        
+        t @=> uGen;
+    }
+    
+    fun void onInit() {
+        Envelope t[cd.c.notes.cap()] @=> e;
+        
+        for (0 => int i; i < uGen.cap(); ++i) {
+            1.0 / uGen.cap() => uGen[i].get().gain;
+            uGen[i].get() => e[i] => dac;
+        }
+    }
+
+    fun void onDestroy() {
+        for (0 => int i; i < uGen.cap(); ++i) {
+            uGen[i].get() =< e[i] =< dac;
+        }
+    }
+
+    fun void perform() {
+        for (0 => int i; i < e.cap(); ++i) {
+            e[i].keyOn();
+        }
+
+        for (0 => int i; i < cd.c.notes.cap(); ++i) {
+            cd.c.notes[i] @=> Note n;
+            uGen[i] @=> UGenPreparation u;
+            
+            u.prepare(n);
+        }
+        
+        cd.duringChordWait.wait();
+
+        for (0 => int i; i < e.cap(); ++i) {
+            e[i].keyOff();
+        }
+
+        cd.afterChordWait.wait();
+    }
+}

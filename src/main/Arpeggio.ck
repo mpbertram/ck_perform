@@ -1,6 +1,4 @@
-/* Arpeggio.ck */
-
-class Arpeggio extends MeasureListener {
+public class Arpeggio extends ck_timesig__MeasureListener {
     UGenPreparation uGen;
     NoteDuration notes[];
     Envelope e;

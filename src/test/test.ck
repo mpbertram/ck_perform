@@ -1,7 +1,13 @@
-/* test.ck */
+class WaitHalfBeat extends WaitFunction {
+    ck_timesig__MeasureListener m;
+    
+    fun void wait() {
+        m.waitHalfBeat();
+    }
+}
 
 class WaitFiveFullBeats extends WaitFunction {
-    MeasureListener m;
+    ck_timesig__MeasureListener m;
     
     fun void wait() {
         m.waitFullBeat();
@@ -12,13 +18,13 @@ class WaitFiveFullBeats extends WaitFunction {
     }
 }
 
-TimeSignature ts;
+ck_timesig__TimeSignature ts;
 [5] @=> ts.beatsPerMeasure;
 8 => ts.beatNoteValue;
 65 => ts.bpm;
 ts.init(5);
 
-Measure m;
+ck_timesig__Measure m;
 ts @=> m.ts;
 
 ModulatedOscillator mo;
@@ -61,24 +67,10 @@ ModulatedOscillator mo3;
 ModulatedOscillator mo4;
 ModulatedOscillator mo5;
 
-Harmony h;
-
-WaitFiveFullBeats wfb;
-h @=> wfb.m;
-
-h.addUGen(mo1);
-h.addUGen(mo2);
-h.addUGen(mo3);
-h.addUGen(mo4);
-h.addUGen(mo5);
-
-ChordDuration.fromChord(c, wfb, wfb) @=> h.cd;
-
 for (0 => int i; i < 40; ++i) {
-    Measure m;
+    ck_timesig__Measure m;
     ts @=> m.ts;
 
     m.register(a);
-    m.register(h);
     m.advanceTime();
 }
