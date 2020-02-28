@@ -6,18 +6,6 @@ class WaitHalfBeat extends WaitFunction {
     }
 }
 
-class WaitFiveFullBeats extends WaitFunction {
-    ck_timesig__MeasureListener m;
-    
-    fun void wait() {
-        m.waitFullBeat();
-        m.waitFullBeat();
-        m.waitFullBeat();
-        m.waitFullBeat();
-        m.waitFullBeat();
-    }
-}
-
 ck_timesig__TimeSignature ts;
 [5] @=> ts.beatsPerMeasure;
 8 => ts.beatNoteValue;
@@ -27,50 +15,60 @@ ts.init(5);
 ck_timesig__Measure m;
 ts @=> m.ts;
 
-ModulatedOscillator mo;
-
-Arpeggio a;
-mo @=> a.uGen;
-
 WaitHalfBeat whb;
+createArpeggio() @=> Arpeggio a;
 a @=> whb.m;
 
-Note n1;
-Std.mtof(67) => n1.note;
+m.register(a);
 
-Note n2;
-Std.mtof(69) => n2.note;
+for (0 => int k; k < 40; ++k) {
+    for (0 => int i; i < 4; ++i) {
+        a.clearNotes();
+        
+        a.addNoteDuration(Std.mtof(60), whb, whb);
+        a.addNoteDuration(Std.mtof(67), whb, whb);
+        a.addNoteDuration(Std.mtof(74), whb, whb);
+        a.addNoteDuration(Std.mtof(79), whb, whb);
+        a.addNoteDuration(Std.mtof(81), whb, whb);
 
-Note n3;
-Std.mtof(74) => n3.note;
+        m.advanceTime();
+    }
 
-Note n4;
-Std.mtof(78) => n4.note;
+    for (0 => int i; i < 1; ++i) {
+        a.clearNotes();
+        
+        a.addNoteDuration(Std.mtof(57), whb, whb);
+        a.addNoteDuration(Std.mtof(69), whb, whb);
+        a.addNoteDuration(Std.mtof(74), whb, whb);
+        a.addNoteDuration(Std.mtof(79), whb, whb);
+        a.addNoteDuration(Std.mtof(81), whb, whb);
 
-Note n5;
-Std.mtof(86) => n5.note;
+        m.advanceTime();
+    }
 
-[
-    NoteDuration.fromNote(n1, whb, whb), 
-    NoteDuration.fromNote(n2, whb, whb), 
-    NoteDuration.fromNote(n3, whb, whb), 
-    NoteDuration.fromNote(n4, whb, whb), 
-    NoteDuration.fromNote(n5, whb, whb)
-] @=> a.notes;
+    for (0 => int i; i < 1; ++i) {
+        a.clearNotes();
+        
+        a.addNoteDuration(Std.mtof(59), whb, whb);
+        a.addNoteDuration(Std.mtof(67), whb, whb);
+        a.addNoteDuration(Std.mtof(74), whb, whb);
+        a.addNoteDuration(Std.mtof(79), whb, whb);
+        a.addNoteDuration(Std.mtof(81), whb, whb);
 
-Chord c;
-[n1, n2, n3, n4, n5] @=> c.notes;
+        m.advanceTime();
+    }
+}
 
-ModulatedOscillator mo1;
-ModulatedOscillator mo2;
-ModulatedOscillator mo3;
-ModulatedOscillator mo4;
-ModulatedOscillator mo5;
+fun Arpeggio createArpeggio() {
+    ModulatedOscillator mo;
+    JCRev r @=> mo.outGate;
 
-for (0 => int i; i < 40; ++i) {
-    ck_timesig__Measure m;
-    ts @=> m.ts;
+    ADSR e;
+    e.set( 10::ms, 8::ms, .5, 500::ms );
 
-    m.register(a);
-    m.advanceTime();
+    Arpeggio a;
+    mo @=> a.uGen;
+    e @=> a.e;
+
+    return a;
 }
