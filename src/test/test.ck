@@ -1,62 +1,137 @@
 class WaitHalfBeat extends WaitFunction {
-    ck_timesig__MeasureListener m;
-    
     fun void wait() {
-        m.waitHalfBeat();
+        ml.waitHalfBeat();
+    }
+    
+    fun WaitFunction copy() {
+        WaitHalfBeat w;
+        return w;
     }
 }
 
-ck_timesig__TimeSignature ts;
-[5] @=> ts.beatsPerMeasure;
-8 => ts.beatNoteValue;
-65 => ts.bpm;
-ts.init(5);
+class WaitQuarterBeat extends WaitFunction {
+    fun void wait() {
+        ml.waitQuarterBeat();
+    }
+    
+    fun WaitFunction copy() {
+        WaitQuarterBeat w;
+        return w;
+    }
+}
 
-ck_timesig__Measure m;
-ts @=> m.ts;
+class WaitThreeQuarterBeat extends WaitFunction {
+    fun void wait() {
+        ml.waitQuarterBeat();
+        ml.waitQuarterBeat();
+        ml.waitQuarterBeat();
+    }
+    
+    fun WaitFunction copy() {
+        WaitThreeQuarterBeat w;
+        return w;
+    }
+}
 
 WaitHalfBeat whb;
-createArpeggio() @=> Arpeggio a;
-a @=> whb.m;
+WaitQuarterBeat wqb;
+WaitThreeQuarterBeat wtqb;
 
-m.register(a);
+createTimeSignature() @=> ck_timesig__TimeSignature ts;
+
+createMeasure(ts) @=> ck_timesig__Measure m1;
+createMeasure(ts) @=> ck_timesig__Measure m2;
+createMeasure(ts) @=> ck_timesig__Measure m3;
+
+createMeasure(ts) @=> ck_timesig__Measure m4;
+createMeasure(ts) @=> ck_timesig__Measure m5;
+createMeasure(ts) @=> ck_timesig__Measure m6;
+
+createArpeggio() @=> Arpeggio a1;
+a1.addNoteDuration(Std.mtof(60), whb, whb);
+a1.addNoteDuration(Std.mtof(67), whb, whb);
+a1.addNoteDuration(Std.mtof(74), whb, whb);
+a1.addNoteDuration(Std.mtof(79), whb, whb);
+a1.addNoteDuration(Std.mtof(81), whb, whb);
+
+createArpeggio() @=> Arpeggio a2;
+a2.addNoteDuration(Std.mtof(57), whb, whb);
+a2.addNoteDuration(Std.mtof(69), whb, whb);
+a2.addNoteDuration(Std.mtof(74), whb, whb);
+a2.addNoteDuration(Std.mtof(79), whb, whb);
+a2.addNoteDuration(Std.mtof(81), whb, whb);
+
+createArpeggio() @=> Arpeggio a3;
+a3.addNoteDuration(Std.mtof(59), whb, whb);
+a3.addNoteDuration(Std.mtof(67), whb, whb);
+a3.addNoteDuration(Std.mtof(74), whb, whb);
+a3.addNoteDuration(Std.mtof(79), whb, whb);
+a3.addNoteDuration(Std.mtof(81), whb, whb);
+
+createArpeggio() @=> Arpeggio a4;
+a4.addNoteDuration(Std.mtof(81), whb, whb);
+a4.addNoteDuration(Std.mtof(79), whb, whb);
+a4.addNoteDuration(Std.mtof(86), wqb, wqb);
+a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
+a4.addNoteDuration(Std.mtof(81), wqb, wqb);
+// a4.addNoteDuration(Std.mtof(79), wqb, wqb);
+
+m1.register(a1);
+m2.register(a2);
+m3.register(a3);
+
+m4.register(a1);
+m4.register(a4);
+
+m5.register(a2);
+m5.register(a4);
+
+m6.register(a3);
+m6.register(a4);
+
+for (0 => int k; k < 2; ++k) {
+    for (0 => int i; i < 2; ++i) {
+        m1.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m2.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m3.advanceTime();
+    }
+}
 
 for (0 => int k; k < 40; ++k) {
     for (0 => int i; i < 4; ++i) {
-        a.clearNotes();
-        
-        a.addNoteDuration(Std.mtof(60), whb, whb);
-        a.addNoteDuration(Std.mtof(67), whb, whb);
-        a.addNoteDuration(Std.mtof(74), whb, whb);
-        a.addNoteDuration(Std.mtof(79), whb, whb);
-        a.addNoteDuration(Std.mtof(81), whb, whb);
-
-        m.advanceTime();
+        m4.advanceTime();
     }
 
     for (0 => int i; i < 1; ++i) {
-        a.clearNotes();
-        
-        a.addNoteDuration(Std.mtof(57), whb, whb);
-        a.addNoteDuration(Std.mtof(69), whb, whb);
-        a.addNoteDuration(Std.mtof(74), whb, whb);
-        a.addNoteDuration(Std.mtof(79), whb, whb);
-        a.addNoteDuration(Std.mtof(81), whb, whb);
-
-        m.advanceTime();
+        m5.advanceTime();
     }
 
     for (0 => int i; i < 1; ++i) {
-        a.clearNotes();
-        
-        a.addNoteDuration(Std.mtof(59), whb, whb);
-        a.addNoteDuration(Std.mtof(67), whb, whb);
-        a.addNoteDuration(Std.mtof(74), whb, whb);
-        a.addNoteDuration(Std.mtof(79), whb, whb);
-        a.addNoteDuration(Std.mtof(81), whb, whb);
-
-        m.advanceTime();
+        m6.advanceTime();
     }
+}
+
+fun ck_timesig__Measure createMeasure(ck_timesig__TimeSignature ts) {
+    ck_timesig__Measure m;
+    ts @=> m.ts;
+    
+    return m;
+}
+
+fun ck_timesig__TimeSignature createTimeSignature() {
+    ck_timesig__TimeSignature ts;
+    [5] @=> ts.beatsPerMeasure;
+    8 => ts.beatNoteValue;
+    65 => ts.bpm;
+    ts.init(10);
+
+    return ts;
 }
 
 fun Arpeggio createArpeggio() {
@@ -67,7 +142,7 @@ fun Arpeggio createArpeggio() {
     e.set( 10::ms, 8::ms, .5, 500::ms );
 
     Arpeggio a;
-    mo @=> a.uGen;
+    mo @=> a.up;
     e @=> a.e;
 
     return a;
