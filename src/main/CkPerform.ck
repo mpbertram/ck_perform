@@ -9,7 +9,8 @@
     me.sourceDir() + "/ModulationFunction.ck",
     me.sourceDir() + "/HalfFreqModulationFunction.ck",
     me.sourceDir() + "/ModulatedOscillator.ck",
-    me.sourceDir() + "/Arpeggio.ck"
+    me.sourceDir() + "/Arpeggio.ck",
+    me.sourceDir() + "/Harmony.ck"
 ] @=> string sources[];
 
 for (0 => int i; i < sources.cap(); ++i) {

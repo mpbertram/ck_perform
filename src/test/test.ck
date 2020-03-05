@@ -1,3 +1,18 @@
+class WaitFiveFullBeats extends WaitFunction {
+    fun void wait() {
+        ml.waitFullBeat();
+        ml.waitFullBeat();
+        ml.waitFullBeat();
+        ml.waitFullBeat();
+        ml.waitFullBeat();
+    }
+    
+    fun WaitFunction copy() {
+        WaitFiveFullBeats w;
+        return w;
+    }
+}
+
 class WaitHalfBeat extends WaitFunction {
     fun void wait() {
         ml.waitHalfBeat();
@@ -33,6 +48,7 @@ class WaitThreeQuarterBeat extends WaitFunction {
     }
 }
 
+WaitFiveFullBeats wffb;
 WaitHalfBeat whb;
 WaitQuarterBeat wqb;
 WaitThreeQuarterBeat wtqb;
@@ -74,20 +90,30 @@ a4.addNoteDuration(Std.mtof(79), whb, whb);
 a4.addNoteDuration(Std.mtof(86), wqb, wqb);
 a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
-// a4.addNoteDuration(Std.mtof(79), wqb, wqb);
+
+createHarmony() @=> Harmony h;
+h.setChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
 m1.register(a1);
+m1.register(h);
+
 m2.register(a2);
+m2.register(h);
+
 m3.register(a3);
+m3.register(h);
 
 m4.register(a1);
 m4.register(a4);
+m4.register(h);
 
 m5.register(a2);
 m5.register(a4);
+m5.register(h);
 
 m6.register(a3);
 m6.register(a4);
+m6.register(h);
 
 for (0 => int k; k < 2; ++k) {
     for (0 => int i; i < 2; ++i) {
@@ -146,4 +172,17 @@ fun Arpeggio createArpeggio() {
     e @=> a.e;
 
     return a;
+}
+
+fun Harmony createHarmony() {
+    ModulatedOscillator mo1;
+    ModulatedOscillator mo2;
+    ModulatedOscillator mo3;
+    
+    Harmony h;
+    h.addUGen(mo1);
+    h.addUGen(mo2);
+    h.addUGen(mo3);
+
+    return h;
 }
