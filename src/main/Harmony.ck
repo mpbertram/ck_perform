@@ -1,6 +1,6 @@
 public class Harmony extends ck_timesig__MeasureListener {
     UGenPreparation up[0];
-    ChordDuration cd;
+    ChordDuration chords[0];
     Envelope e[];
 
     0 => int on;
@@ -8,7 +8,7 @@ public class Harmony extends ck_timesig__MeasureListener {
 
     fun void prepare() {
         if (chucked == 0) {
-            Envelope t[cd.c.notes.cap()] @=> e;
+            Envelope t[up.cap()] @=> e;
             
             for (0 => int i; i < up.cap(); ++i) {
                 1.0 / up.cap() => up[i].get().gain;
@@ -32,24 +32,28 @@ public class Harmony extends ck_timesig__MeasureListener {
     fun void perform() {
         1 => on;
         
-        for (0 => int i; i < e.cap(); ++i) {
-            e[i].keyOn();
-        }
-
-        for (0 => int i; i < cd.c.notes.cap(); ++i) {
-            cd.c.notes[i] @=> Note n;
-            up[i] @=> UGenPreparation u;
+        for (0 => int k; k < chords.cap(); ++k) {
+            chords[k] @=> ChordDuration cd;
             
-            u.prepare(n);
-        }
-        
-        cd.duringChordWait.wait();
+            for (0 => int i; i < e.cap(); ++i) {
+                e[i].keyOn();
+            }
 
-        for (0 => int i; i < e.cap(); ++i) {
-            e[i].keyOff();
-        }
+            for (0 => int i; i < cd.c.notes.cap(); ++i) {
+                cd.c.notes[i] @=> Note n;
+                up[i] @=> UGenPreparation u;
+                
+                u.prepare(n);
+            }
+            
+            cd.duringChordWait.wait();
 
-        cd.afterChordWait.wait();
+            for (0 => int i; i < e.cap(); ++i) {
+                e[i].keyOff();
+            }
+
+            cd.afterChordWait.wait();
+        }
         
         0 => on;
     }
@@ -69,17 +73,28 @@ public class Harmony extends ck_timesig__MeasureListener {
         t @=> up;
     }
     
-    fun void setChordDuration(Chord c, WaitFunction wb, WaitFunction wd) {
+    fun void addChordDuration(Chord c, WaitFunction wb, WaitFunction wd) {
+        chords.cap() => int chordsCap;
+        
+        ChordDuration t[chordsCap + 1];
+        if (chordsCap > 0) {
+            for (0 => int i; i < chordsCap; ++i) {
+                chords[i] @=> t[i];
+            }
+        }
+
         wb.copy() @=> WaitFunction wbCopy;
         this @=> wbCopy.ml;
         
         wd.copy() @=> WaitFunction wdCopy;
         this @=> wdCopy.ml;
         
-        ChordDuration.fromChord(c, wbCopy, wdCopy) @=> cd;
+        ChordDuration.fromChord(c, wbCopy, wdCopy) @=> t[t.cap() - 1];
+        
+        t @=> chords;
     }
     
-    fun void setChordDuration(float f[], WaitFunction wb, WaitFunction wd) {
+    fun void addChordDuration(float f[], WaitFunction wb, WaitFunction wd) {
         Note notes[f.cap()];
         
         for (0 => int i; i < f.cap(); ++i) {
@@ -89,6 +104,6 @@ public class Harmony extends ck_timesig__MeasureListener {
         Chord c;
         notes @=> c.notes;
         
-        setChordDuration(c, wb, wd);
+        addChordDuration(c, wb, wd);
     }
 }

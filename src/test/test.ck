@@ -1,6 +1,25 @@
-class WaitFiveFullBeats extends WaitFunction {
+class NoWait extends WaitFunction {
+    fun void wait() {}
+    
+    fun WaitFunction copy() {
+        NoWait w;
+        return w;
+    }
+}
+
+class WaitFullBeat extends WaitFunction {
     fun void wait() {
         ml.waitFullBeat();
+    }
+    
+    fun WaitFunction copy() {
+        WaitFullBeat w;
+        return w;
+    }
+}
+
+class WaitFourFullBeats extends WaitFunction {
+    fun void wait() {
         ml.waitFullBeat();
         ml.waitFullBeat();
         ml.waitFullBeat();
@@ -8,7 +27,7 @@ class WaitFiveFullBeats extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitFiveFullBeats w;
+        WaitFourFullBeats w;
         return w;
     }
 }
@@ -48,10 +67,12 @@ class WaitThreeQuarterBeat extends WaitFunction {
     }
 }
 
-WaitFiveFullBeats wffb;
-WaitHalfBeat whb;
+NoWait nw;
 WaitQuarterBeat wqb;
+WaitHalfBeat whb;
 WaitThreeQuarterBeat wtqb;
+WaitFullBeat wfb;
+WaitFourFullBeats wffb;
 
 createTimeSignature() @=> ck_timesig__TimeSignature ts;
 
@@ -92,7 +113,8 @@ a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
 
 createHarmony() @=> Harmony h;
-h.setChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
+h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(83)], wfb, nw);
+h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
 m1.register(a1);
 m1.register(h);
