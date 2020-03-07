@@ -6,6 +6,7 @@
     me.sourceDir() + "/Chord.ck",
     me.sourceDir() + "/ChordDuration.ck",
     me.sourceDir() + "/UGenPreparation.ck",
+    me.sourceDir() + "/UGenChain.ck",
     me.sourceDir() + "/ModulationFunction.ck",
     me.sourceDir() + "/HalfFreqModulationFunction.ck",
     me.sourceDir() + "/ModulatedOscillator.ck",

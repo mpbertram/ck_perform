@@ -2,8 +2,7 @@ class NoWait extends WaitFunction {
     fun void wait() {}
     
     fun WaitFunction copy() {
-        NoWait w;
-        return w;
+        return NoWait w;
     }
 }
 
@@ -13,8 +12,7 @@ class WaitFullBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitFullBeat w;
-        return w;
+        return WaitFullBeat w;
     }
 }
 
@@ -27,8 +25,7 @@ class WaitFourFullBeats extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitFourFullBeats w;
-        return w;
+        return WaitFourFullBeats w;
     }
 }
 
@@ -38,8 +35,7 @@ class WaitHalfBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitHalfBeat w;
-        return w;
+        return WaitHalfBeat w;
     }
 }
 
@@ -49,8 +45,7 @@ class WaitQuarterBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitQuarterBeat w;
-        return w;
+        return WaitQuarterBeat w;
     }
 }
 
@@ -62,8 +57,7 @@ class WaitThreeQuarterBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        WaitThreeQuarterBeat w;
-        return w;
+        return WaitThreeQuarterBeat w;
     }
 }
 
@@ -113,7 +107,7 @@ a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
 
 createHarmony() @=> Harmony h;
-h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(83)], wfb, nw);
+h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, nw);
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
 m1.register(a1);
@@ -184,7 +178,10 @@ fun ck_timesig__TimeSignature createTimeSignature() {
 
 fun Arpeggio createArpeggio() {
     ModulatedOscillator mo;
-    JCRev r @=> mo.outGate;
+    
+    UGenChain uc;
+    uc.append(JCRev r);
+    uc @=> mo.outGate;
 
     ADSR e;
     e.set( 10::ms, 8::ms, .5, 500::ms );
@@ -200,6 +197,17 @@ fun Harmony createHarmony() {
     ModulatedOscillator mo1;
     ModulatedOscillator mo2;
     ModulatedOscillator mo3;
+
+    Gain g;
+    0.2 => g.gain;
+
+    UGenChain uc;
+    uc.append(g);
+    uc.append(Chorus c);
+    
+    uc @=> mo1.outGate;
+    uc @=> mo2.outGate;
+    uc @=> mo3.outGate;
     
     Harmony h;
     h.addUGen(mo1);

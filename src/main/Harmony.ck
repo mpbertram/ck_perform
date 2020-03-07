@@ -11,7 +11,7 @@ public class Harmony extends ck_timesig__MeasureListener {
             Envelope t[up.cap()] @=> e;
             
             for (0 => int i; i < up.cap(); ++i) {
-                1.0 / up.cap() => up[i].get().gain;
+                up[i].get().gain() / up.cap() => up[i].get().gain;
                 up[i].get() => e[i] => dac;
             }
             

@@ -1,7 +1,7 @@
 public class ModulatedOscillator extends UGenPreparation {
     SinOsc v;
     SinOsc s;
-    UGen outGate;
+    UGenChain outGate;
     HalfFreqModulationFunction f @=> ModulationFunction mf;
 
     100 => float vGain;
@@ -9,7 +9,7 @@ public class ModulatedOscillator extends UGenPreparation {
 
     fun void reset() {
         v =< s;
-        s =< outGate;
+        s =< outGate.in();
 
         2 => s.sync;
 
@@ -17,7 +17,7 @@ public class ModulatedOscillator extends UGenPreparation {
         sGain => s.gain;
 
         v => s;
-        s => outGate;
+        s => outGate.in();
     }
 
     fun void prepare(Note n) {
@@ -28,6 +28,6 @@ public class ModulatedOscillator extends UGenPreparation {
     }
 
     fun UGen get() {
-        return outGate;
+        return outGate.out();
     }
 }
