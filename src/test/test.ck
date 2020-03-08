@@ -49,6 +49,16 @@ class WaitQuarterBeat extends WaitFunction {
     }
 }
 
+class WaitSixtyFourthBeat extends WaitFunction {
+    fun void wait() {
+        ml.waitSixtyFourthBeat();
+    }
+    
+    fun WaitFunction copy() {
+        return new WaitSixtyFourthBeat;
+    }
+}
+
 class WaitThreeQuarterBeat extends WaitFunction {
     fun void wait() {
         ml.waitQuarterBeat();
@@ -62,6 +72,7 @@ class WaitThreeQuarterBeat extends WaitFunction {
 }
 
 NoWait nw;
+WaitSixtyFourthBeat wsfb;
 WaitQuarterBeat wqb;
 WaitHalfBeat whb;
 WaitThreeQuarterBeat wtqb;
@@ -110,26 +121,49 @@ createHarmony() @=> Harmony h;
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, nw);
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
+createDrum() @=> Arpeggio @ d;
+d.addNoteDuration(Std.mtof(11), wsfb, wffb);
+d.addNoteDuration(Std.mtof(11), wsfb, wfb);
+
+createSnare() @=> Arpeggio @ s;
+s.addNoteDuration(0, wsfb, wfb);
+s.addNoteDuration(0, wsfb, wfb);
+s.addNoteDuration(0, wsfb, wfb);
+s.addNoteDuration(1, wsfb, wfb);
+s.addNoteDuration(0, wsfb, wfb);
+
 m1.register(a1);
 m1.register(h);
+m1.register(d);
+m1.register(s);
 
 m2.register(a2);
 m2.register(h);
+m2.register(d);
+m2.register(s);
 
 m3.register(a3);
 m3.register(h);
+m3.register(d);
+m3.register(s);
 
 m4.register(a1);
 m4.register(a4);
 m4.register(h);
+m4.register(d);
+m4.register(s);
 
 m5.register(a2);
 m5.register(a4);
 m5.register(h);
+m5.register(d);
+m5.register(s);
 
 m6.register(a3);
 m6.register(a4);
 m6.register(h);
+m6.register(d);
+m6.register(s);
 
 for (0 => int k; k < 2; ++k) {
     for (0 => int i; i < 2; ++i) {
@@ -193,13 +227,51 @@ fun Arpeggio createArpeggio() {
     return a;
 }
 
+fun Arpeggio createDrum() {
+    ModulatedOscillator mo;
+    
+    UGenChain uc;
+    uc.append(JCRev r);
+    uc @=> mo.outGate;
+
+    ADSR e;
+    e.set( 5::ms, 5::ms, 0.025, 500::ms );
+
+    Arpeggio a;
+    mo @=> a.up;
+    e @=> a.e;
+
+    return a;
+}
+
+fun Arpeggio createSnare() {
+    BPF bpf;
+    20 => bpf.Q;
+	Std.mtof(71) => bpf.freq;
+    
+    Noiser n;
+    
+    UGenChain uc;
+    uc.append(bpf);
+    uc @=> n.outGate;
+
+    ADSR e;
+    e.set( 10::ms, 10::ms, 0.075, 75::ms );
+
+    Arpeggio a;
+    n @=> a.up;
+    e @=> a.e;
+
+    return a;
+}
+
 fun Harmony createHarmony() {
     ModulatedOscillator mo1;
     ModulatedOscillator mo2;
     ModulatedOscillator mo3;
 
     Gain g;
-    0.25 => g.gain;
+    0.5 => g.gain;
 
     UGenChain uc;
     uc.append(g);

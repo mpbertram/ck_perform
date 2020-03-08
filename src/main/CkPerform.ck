@@ -10,6 +10,7 @@
     me.sourceDir() + "/ModulationFunction.ck",
     me.sourceDir() + "/HalfFreqModulationFunction.ck",
     me.sourceDir() + "/ModulatedOscillator.ck",
+    me.sourceDir() + "/Noiser.ck",
     me.sourceDir() + "/Arpeggio.ck",
     me.sourceDir() + "/Harmony.ck"
 ] @=> string sources[];
