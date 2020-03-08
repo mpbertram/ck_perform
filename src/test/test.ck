@@ -89,43 +89,43 @@ createMeasure(ts) @=> ck_timesig__Measure m4;
 createMeasure(ts) @=> ck_timesig__Measure m5;
 createMeasure(ts) @=> ck_timesig__Measure m6;
 
-createArpeggio() @=> Arpeggio a1;
+createArpeggio() @=> NoteSequence a1;
 a1.addNoteDuration(Std.mtof(60), whb, whb);
 a1.addNoteDuration(Std.mtof(67), whb, whb);
 a1.addNoteDuration(Std.mtof(74), whb, whb);
 a1.addNoteDuration(Std.mtof(79), whb, whb);
 a1.addNoteDuration(Std.mtof(81), whb, whb);
 
-createArpeggio() @=> Arpeggio a2;
+createArpeggio() @=> NoteSequence a2;
 a2.addNoteDuration(Std.mtof(57), whb, whb);
 a2.addNoteDuration(Std.mtof(69), whb, whb);
 a2.addNoteDuration(Std.mtof(74), whb, whb);
 a2.addNoteDuration(Std.mtof(79), whb, whb);
 a2.addNoteDuration(Std.mtof(81), whb, whb);
 
-createArpeggio() @=> Arpeggio a3;
+createArpeggio() @=> NoteSequence a3;
 a3.addNoteDuration(Std.mtof(59), whb, whb);
 a3.addNoteDuration(Std.mtof(67), whb, whb);
 a3.addNoteDuration(Std.mtof(74), whb, whb);
 a3.addNoteDuration(Std.mtof(79), whb, whb);
 a3.addNoteDuration(Std.mtof(81), whb, whb);
 
-createArpeggio() @=> Arpeggio a4;
+createArpeggio() @=> NoteSequence a4;
 a4.addNoteDuration(Std.mtof(81), whb, whb);
 a4.addNoteDuration(Std.mtof(79), whb, whb);
 a4.addNoteDuration(Std.mtof(86), wqb, wqb);
 a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
 
-createHarmony() @=> Harmony h;
+createHarmony() @=> ChordSequence h;
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, nw);
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
-createDrum() @=> Arpeggio @ d;
+createDrum() @=> NoteSequence @ d;
 d.addNoteDuration(Std.mtof(11), wsfb, wffb);
 d.addNoteDuration(Std.mtof(11), wsfb, wfb);
 
-createSnare() @=> Arpeggio @ s;
+createSnare() @=> NoteSequence @ s;
 s.addNoteDuration(0, wsfb, wfb);
 s.addNoteDuration(0, wsfb, wfb);
 s.addNoteDuration(0, wsfb, wfb);
@@ -210,8 +210,8 @@ fun ck_timesig__TimeSignature createTimeSignature() {
     return ts;
 }
 
-fun Arpeggio createArpeggio() {
-    ModulatedOscillator mo;
+fun NoteSequence createArpeggio() {
+    ModulatedOsc mo;
     
     UGenChain uc;
     uc.append(JCRev r);
@@ -220,31 +220,24 @@ fun Arpeggio createArpeggio() {
     ADSR e;
     e.set( 10::ms, 8::ms, .5, 500::ms );
 
-    Arpeggio a;
+    NoteSequence a;
     mo @=> a.up;
     e @=> a.e;
 
     return a;
 }
 
-fun Arpeggio createDrum() {
-    ModulatedOscillator mo;
-    
-    UGenChain uc;
-    uc.append(JCRev r);
-    uc @=> mo.outGate;
+fun NoteSequence createDrum() {
+    createArpeggio() @=> NoteSequence @ d;
 
     ADSR e;
     e.set( 5::ms, 5::ms, 0.025, 500::ms );
+    e @=> d.e;
 
-    Arpeggio a;
-    mo @=> a.up;
-    e @=> a.e;
-
-    return a;
+    return d;
 }
 
-fun Arpeggio createSnare() {
+fun NoteSequence createSnare() {
     BPF bpf;
     20 => bpf.Q;
 	Std.mtof(71) => bpf.freq;
@@ -258,17 +251,17 @@ fun Arpeggio createSnare() {
     ADSR e;
     e.set( 10::ms, 10::ms, 0.075, 75::ms );
 
-    Arpeggio a;
+    NoteSequence a;
     n @=> a.up;
     e @=> a.e;
 
     return a;
 }
 
-fun Harmony createHarmony() {
-    ModulatedOscillator mo1;
-    ModulatedOscillator mo2;
-    ModulatedOscillator mo3;
+fun ChordSequence createHarmony() {
+    ModulatedOsc mo1;
+    ModulatedOsc mo2;
+    ModulatedOsc mo3;
 
     Gain g;
     0.5 => g.gain;
@@ -288,7 +281,7 @@ fun Harmony createHarmony() {
         e @=> t[i];
     }
     
-    Harmony h;
+    ChordSequence h;
 
     t @=> h.e;
 

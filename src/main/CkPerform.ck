@@ -9,10 +9,10 @@
     me.sourceDir() + "/UGenChain.ck",
     me.sourceDir() + "/ModulationFunction.ck",
     me.sourceDir() + "/HalfFreqModulationFunction.ck",
-    me.sourceDir() + "/ModulatedOscillator.ck",
+    me.sourceDir() + "/ModulatedOsc.ck",
     me.sourceDir() + "/Noiser.ck",
-    me.sourceDir() + "/Arpeggio.ck",
-    me.sourceDir() + "/Harmony.ck"
+    me.sourceDir() + "/NoteSequence.ck",
+    me.sourceDir() + "/ChordSequence.ck"
 ] @=> string sources[];
 
 for (0 => int i; i < sources.cap(); ++i) {

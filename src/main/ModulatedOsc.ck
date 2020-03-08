@@ -1,4 +1,4 @@
-public class ModulatedOscillator extends UGenPreparation {
+public class ModulatedOsc extends UGenPreparation {
     SinOsc v;
     SinOsc s;
     UGenChain outGate;

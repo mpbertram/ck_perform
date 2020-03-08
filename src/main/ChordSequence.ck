@@ -1,4 +1,4 @@
-public class Harmony extends ck_timesig__MeasureListener {
+public class ChordSequence extends ck_timesig__MeasureListener {
     UGenPreparation up[0];
     ChordDuration chords[0];
     Envelope e[];

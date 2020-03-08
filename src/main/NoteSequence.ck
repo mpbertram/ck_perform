@@ -1,4 +1,4 @@
-public class Arpeggio extends ck_timesig__MeasureListener {
+public class NoteSequence extends ck_timesig__MeasureListener {
     UGenPreparation up;
     NoteDuration notes[0];
     Envelope e;
