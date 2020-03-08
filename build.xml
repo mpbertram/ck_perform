@@ -5,8 +5,20 @@
   <property name="src" location="src/main"/>
   <property name="recs" location="recs"/>
   <property name="dist" location="dist"/>
+  <property name="lib-src" location="lib-src"/>
+  <property name="lib" location="lib"/>
   
-  <target name="run-test">
+  <target name="clean-lib">
+    <delete dir="${lib}"/>
+  </target>
+  
+  <target name="extract-lib" depends="clean-lib">
+    <unzip dest="${lib}">
+      <fileset dir="${lib-src}" includes="*.zip"/>
+    </unzip>
+  </target>
+  
+  <target name="run-test" depends="extract-lib">
     <exec executable="chuck">
       <arg value="${test-starter}"/>
     </exec>
@@ -21,7 +33,7 @@
     <delete dir="${recs}"/>
   </target>
   
-  <target name="rec-test" depends="rec-init">
+  <target name="rec-test" depends="rec-init,extract-lib">
     <exec executable="chuck">
       <arg value="rec.ck:${test-starter}"/>
     </exec>
@@ -33,7 +45,7 @@
 
   <target name="dist" depends="clean-dist">
       <zip destfile="${dist}/${ant.project.name}_v${version}.zip">
-        <zipfileset dir="${src}" includes="*.ck"/>
+        <zipfileset dir="${src}" includes="*.ck" prefix="ck_perform"/>
       </zip>
   </target>
 </project>
