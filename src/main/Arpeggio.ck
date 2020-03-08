@@ -64,8 +64,4 @@ public class Arpeggio extends ck_timesig__MeasureListener {
         
         addNoteDuration(n, wb, wd);
     }
-    
-    fun void clearNotes() {
-        NoteDuration nd[0] @=> notes;
-    }
 }

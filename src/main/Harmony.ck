@@ -8,7 +8,9 @@ public class Harmony extends ck_timesig__MeasureListener {
 
     fun void prepare() {
         if (chucked == 0) {
-            Envelope t[up.cap()] @=> e;
+            if (e == null) {
+                Envelope t[up.cap()] @=> e;
+            }
             
             for (0 => int i; i < up.cap(); ++i) {
                 up[i].get().gain() / up.cap() => up[i].get().gain;

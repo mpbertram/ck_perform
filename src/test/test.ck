@@ -2,7 +2,7 @@ class NoWait extends WaitFunction {
     fun void wait() {}
     
     fun WaitFunction copy() {
-        return NoWait w;
+        return new NoWait;
     }
 }
 
@@ -12,7 +12,7 @@ class WaitFullBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        return WaitFullBeat w;
+        return new WaitFullBeat;
     }
 }
 
@@ -25,7 +25,7 @@ class WaitFourFullBeats extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        return WaitFourFullBeats w;
+        return new WaitFourFullBeats;
     }
 }
 
@@ -35,7 +35,7 @@ class WaitHalfBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        return WaitHalfBeat w;
+        return new WaitHalfBeat;
     }
 }
 
@@ -45,7 +45,7 @@ class WaitQuarterBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        return WaitQuarterBeat w;
+        return new WaitQuarterBeat;
     }
 }
 
@@ -57,7 +57,7 @@ class WaitThreeQuarterBeat extends WaitFunction {
     }
     
     fun WaitFunction copy() {
-        return WaitThreeQuarterBeat w;
+        return new WaitThreeQuarterBeat;
     }
 }
 
@@ -199,7 +199,7 @@ fun Harmony createHarmony() {
     ModulatedOscillator mo3;
 
     Gain g;
-    0.2 => g.gain;
+    0.25 => g.gain;
 
     UGenChain uc;
     uc.append(g);
@@ -208,8 +208,18 @@ fun Harmony createHarmony() {
     uc @=> mo1.outGate;
     uc @=> mo2.outGate;
     uc @=> mo3.outGate;
+
+    Envelope @ t[3];
+    for (0 => int i; i < 3; ++i) {
+        ADSR e;    
+        e.set( 10::ms, 8::ms, .5, 500::ms );
+        e @=> t[i];
+    }
     
     Harmony h;
+
+    t @=> h.e;
+
     h.addUGen(mo1);
     h.addUGen(mo2);
     h.addUGen(mo3);
