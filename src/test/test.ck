@@ -1,90 +1,15 @@
-class NoWait extends WaitFunction {
-    fun void wait() {}
-    
-    fun WaitFunction copy() {
-        return new NoWait;
-    }
-}
-
-class WaitFullBeat extends WaitFunction {
-    fun void wait() {
-        ml.waitFullBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitFullBeat;
-    }
-}
-
-class WaitFourFullBeats extends WaitFunction {
-    fun void wait() {
-        ml.waitFullBeat();
-        ml.waitFullBeat();
-        ml.waitFullBeat();
-        ml.waitFullBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitFourFullBeats;
-    }
-}
-
-class WaitHalfBeat extends WaitFunction {
-    fun void wait() {
-        ml.waitHalfBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitHalfBeat;
-    }
-}
-
-class WaitQuarterBeat extends WaitFunction {
-    fun void wait() {
-        ml.waitQuarterBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitQuarterBeat;
-    }
-}
-
-class WaitSixtyFourthBeat extends WaitFunction {
-    fun void wait() {
-        ml.waitSixtyFourthBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitSixtyFourthBeat;
-    }
-}
-
-class WaitThreeQuarterBeat extends WaitFunction {
-    fun void wait() {
-        ml.waitQuarterBeat();
-        ml.waitQuarterBeat();
-        ml.waitQuarterBeat();
-    }
-    
-    fun WaitFunction copy() {
-        return new WaitThreeQuarterBeat;
-    }
-}
-
-NoWait nw;
-WaitSixtyFourthBeat wsfb;
-WaitQuarterBeat wqb;
-WaitHalfBeat whb;
-WaitThreeQuarterBeat wtqb;
-WaitFullBeat wfb;
-WaitFourFullBeats wffb;
+WaitFunctions.WAIT_NOTHING @=> WaitFunction @ wn;
+WaitFunctions.WAIT_SIXTY_FOURTH_BEAT @=> WaitFunction wsfb;
+WaitFunctions.WAIT_QUARTER_BEAT @=> WaitFunction wqb;
+WaitFunctions.WAIT_HALF_BEAT @=> WaitFunction whb;
+WaitFunctions.WAIT_FULL_BEAT @=> WaitFunction wfb;
+WaitFunctionCombination.of([wqb, wqb, wqb]) @=> WaitFunction wtqb;
+WaitFunctionCombination.of([wfb, wfb, wfb, wfb]) @=> WaitFunction wffb;
 
 createTimeSignature() @=> ck_timesig__TimeSignature ts;
-
 createMeasure(ts) @=> ck_timesig__Measure m1;
 createMeasure(ts) @=> ck_timesig__Measure m2;
 createMeasure(ts) @=> ck_timesig__Measure m3;
-
 createMeasure(ts) @=> ck_timesig__Measure m4;
 createMeasure(ts) @=> ck_timesig__Measure m5;
 createMeasure(ts) @=> ck_timesig__Measure m6;
@@ -118,7 +43,7 @@ a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
 
 createHarmony() @=> ChordSequence h;
-h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, nw);
+h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, wn);
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wffb, wffb);
 
 createDrum() @=> NoteSequence @ d;
@@ -218,7 +143,7 @@ fun NoteSequence createArpeggio() {
     uc @=> mo.outGate;
 
     ADSR e;
-    e.set( 10::ms, 8::ms, .5, 500::ms );
+    e.set(10::ms, 8::ms, .5, 500::ms);
 
     NoteSequence a;
     mo @=> a.up;
@@ -231,7 +156,7 @@ fun NoteSequence createDrum() {
     createArpeggio() @=> NoteSequence @ d;
 
     ADSR e;
-    e.set( 5::ms, 5::ms, 0.025, 500::ms );
+    e.set(5::ms, 5::ms, 0.025, 500::ms);
     e @=> d.e;
 
     return d;
@@ -249,7 +174,7 @@ fun NoteSequence createSnare() {
     uc @=> n.outGate;
 
     ADSR e;
-    e.set( 10::ms, 10::ms, 0.075, 75::ms );
+    e.set(10::ms, 10::ms, 0.075, 75::ms);
 
     NoteSequence a;
     n @=> a.up;
@@ -277,7 +202,7 @@ fun ChordSequence createHarmony() {
     Envelope @ t[3];
     for (0 => int i; i < 3; ++i) {
         ADSR e;    
-        e.set( 10::ms, 8::ms, .5, 500::ms );
+        e.set(10::ms, 8::ms, .5, 500::ms);
         e @=> t[i];
     }
     

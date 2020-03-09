@@ -1,6 +1,8 @@
 [
     me.sourceDir() + "../../lib/ck_timesig/CkTimesig.ck",
     me.sourceDir() + "/WaitFunction.ck",
+    me.sourceDir() + "/WaitFunctions.ck",
+    me.sourceDir() + "/WaitFunctionCombination.ck",
     me.sourceDir() + "/Note.ck",
     me.sourceDir() + "/NoteDuration.ck",
     me.sourceDir() + "/Chord.ck",
