@@ -67,11 +67,11 @@ d.addNoteDuration(Std.mtof(11), wsfb, w4fb);
 d.addNoteDuration(Std.mtof(11), wsfb, wfb);
 
 createSnare() @=> NoteSequence @ s;
-s.addNoteDuration(0, wsfb, wfb);
-s.addNoteDuration(0, wsfb, wfb);
-s.addNoteDuration(0, wsfb, wfb);
-s.addNoteDuration(1, wsfb, wfb);
-s.addNoteDuration(0, wsfb, wfb);
+s.addSilence(wfb);
+s.addSilence(wfb);
+s.addSilence(wfb);
+s.addNoteDuration(Std.mtof(72), wsfb, wfb);
+s.addSilence(wfb);
 
 m0.register(h);
 m0.register(d);
@@ -134,7 +134,7 @@ for (0 => int k; k < 8; ++k) {
     m0.advanceTime();    
 }
 
-for (0 => int k; k < 2; ++k) {
+for (0 => int k; k < 4; ++k) {
     for (0 => int i; i < 2; ++i) {
         m1.advanceTime();
     }
@@ -148,8 +148,8 @@ for (0 => int k; k < 2; ++k) {
     }
 }
 
-for (0 => int k; k < 2; ++k) {
-    for (0 => int i; i < 2; ++i) {
+for (0 => int k; k < 4; ++k) {
+    for (0 => int i; i < 4; ++i) {
         m4.advanceTime();
     }
 
@@ -187,7 +187,7 @@ fun ck_timesig__TimeSignature createTimeSignature() {
     ck_timesig__TimeSignature ts;
     [5] @=> ts.beatsPerMeasure;
     8 => ts.beatNoteValue;
-    68 => ts.bpm;
+    70 => ts.bpm;
     ts.init(10);
 
     return ts;
@@ -221,24 +221,24 @@ fun NoteSequence createDrum() {
 }
 
 fun NoteSequence createSnare() {
-    BPF bpf;
-    20 => bpf.Q;
-	Std.mtof(71) => bpf.freq;
-    
-    Noiser n;
-    
+    ModulatedOsc mo;
+
+    Gain g;
+    10 => g.gain;
+
     UGenChain uc;
-    uc.append(bpf);
-    uc @=> n.outGate;
+    uc.append(new JCRev);
+    uc.append(g);
+    uc @=> mo.outGate;
 
     ADSR e;
-    e.set(10::ms, 10::ms, 0.075, 75::ms);
+    e.set(5::ms, 5::ms, 0.005, 10::ms);
 
-    NoteSequence a;
-    n @=> a.up;
-    e @=> a.e;
-
-    return a;
+    NoteSequence s;
+    mo @=> s.up;
+    e @=> s.e;
+    
+    return s;
 }
 
 fun ChordSequence createChordSequence() {
@@ -247,7 +247,7 @@ fun ChordSequence createChordSequence() {
     ModulatedOsc mo3;
 
     Gain g;
-    0.5 => g.gain;
+    1 => g.gain;
 
     UGenChain uc;
     uc.append(g);
