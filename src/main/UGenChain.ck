@@ -2,7 +2,7 @@ public class UGenChain {
     Gain g;
     [g $ UGen] @=> UGen uGens[];
     
-    public void append(UGen uGen) {
+    fun void append(UGen uGen) {
         uGens.cap() => int uGensCap;
         
         UGen t[uGensCap + 1];
@@ -17,12 +17,12 @@ public class UGenChain {
         
         t @=> uGens;
     }
-    
-    public UGen in() {
+
+    fun UGen in() {
         return uGens[0];
     }
     
-    public UGen out() {
+    fun UGen out() {
         return uGens[uGens.cap() - 1];
     }
 }

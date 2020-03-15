@@ -37,6 +37,12 @@ public class ChordSequence extends ck_timesig__MeasureListener {
         for (0 => int k; k < chords.cap(); ++k) {
             chords[k] @=> ChordDuration cd;
             
+            if (cd.c == null) {
+                cd.duringChordWait.wait();
+                cd.afterChordWait.wait();
+                continue;
+            }
+            
             for (0 => int i; i < e.cap(); ++i) {
                 e[i].keyOn();
             }
@@ -107,5 +113,9 @@ public class ChordSequence extends ck_timesig__MeasureListener {
         notes @=> c.notes;
         
         addChordDuration(c, wb, wd);
+    }
+    
+    fun void addSilence(WaitFunction w) {
+        addChordDuration(null $ Chord, w, WaitFunctions.WAIT_NOTHING);
     }
 }

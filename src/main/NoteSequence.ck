@@ -26,6 +26,12 @@ public class NoteSequence extends ck_timesig__MeasureListener {
         for (0 => int i; i < notes.cap(); ++i) {
             notes[i] @=> NoteDuration nd;
             
+            if (nd.n == null) {
+                nd.duringNoteWait.wait();
+                nd.afterNoteWait.wait();
+                continue;
+            }
+            
             up.prepare(nd.n);
             
             e.keyOn();
@@ -63,5 +69,9 @@ public class NoteSequence extends ck_timesig__MeasureListener {
         f => n.note;
         
         addNoteDuration(n, wb, wd);
+    }
+    
+    fun void addSilence(WaitFunction w) {
+        addNoteDuration(null $ Note, w, WaitFunctions.WAIT_NOTHING);
     }
 }
