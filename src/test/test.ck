@@ -8,6 +8,7 @@ WaitFunctionCombination.of([wfb, wfb]) @=> WaitFunction w2fb;
 WaitFunctionCombination.of([wfb, wfb, wfb]) @=> WaitFunction w3fb;
 WaitFunctionCombination.of([wfb, wfb, wfb, wfb]) @=> WaitFunction w4fb;
 WaitFunctionCombination.of([wfb, wfb, wfb, wfb, wfb]) @=> WaitFunction w5fb;
+WaitFunctionCombination.of([w5fb, w5fb, w5fb, w5fb]) @=> WaitFunction w20fb;
 
 createTimeSignature() @=> ck_timesig__TimeSignature ts;
 createMeasure(ts) @=> ck_timesig__Measure m0;
@@ -20,6 +21,9 @@ createMeasure(ts) @=> ck_timesig__Measure m6;
 createMeasure(ts) @=> ck_timesig__Measure m7;
 createMeasure(ts) @=> ck_timesig__Measure m8;
 createMeasure(ts) @=> ck_timesig__Measure m9;
+createMeasure(ts) @=> ck_timesig__Measure m10;
+createMeasure(ts) @=> ck_timesig__Measure m11;
+createMeasure(ts) @=> ck_timesig__Measure m12;
 
 createNoteSequence() @=> NoteSequence a1;
 a1.addNoteDuration(Std.mtof(60), whb, whb);
@@ -49,14 +53,26 @@ a4.addNoteDuration(Std.mtof(86), wqb, wqb);
 a4.addNoteDuration(Std.mtof(83), wtqb, wtqb);
 a4.addNoteDuration(Std.mtof(81), wqb, wqb);
 
-createNoteSequence() @=> NoteSequence b1;
-b1.addNoteDuration(Std.mtof(48), w3fb, wfb);
+createNoteSequence() @=> NoteSequence a5;
+a5.addNoteDuration(Std.mtof(83), wqb, wqb);
+a5.addNoteDuration(Std.mtof(81), wqb, wqb);
+a5.addNoteDuration(Std.mtof(79), wqb, wqb);
+a5.addNoteDuration(Std.mtof(83), wqb, wqb);
+a5.addNoteDuration(Std.mtof(81), wqb, wqb);
+a5.addNoteDuration(Std.mtof(79), wqb, wqb);
+a5.addNoteDuration(Std.mtof(83), wqb, wqb);
+a5.addNoteDuration(Std.mtof(81), wqb, wqb);
+a5.addNoteDuration(Std.mtof(79), wqb, wqb);
+a5.addNoteDuration(Std.mtof(86), wqb, wqb);
+
+createLongLastingNoteSequence() @=> NoteSequence b1;
+b1.addNoteDuration(Std.mtof(48), w20fb, wn);
 
 createNoteSequence() @=> NoteSequence b2;
-b2.addNoteDuration(Std.mtof(45), w3fb, w5fb);
+b2.addNoteDuration(Std.mtof(45), w5fb, wn);
 
 createNoteSequence() @=> NoteSequence b3;
-b3.addNoteDuration(Std.mtof(47), w3fb, w5fb);
+b3.addNoteDuration(Std.mtof(47), w5fb, wn);
 
 createChordSequence() @=> ChordSequence h;
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, wn);
@@ -130,6 +146,30 @@ m9.register(d);
 m9.register(s);
 m9.register(b3);
 
+m10.register(a1);
+m10.register(a4);
+m10.register(h);
+m10.register(d);
+m10.register(s);
+m10.register(b1);
+m10.register(a5);
+
+m11.register(a2);
+m11.register(a4);
+m11.register(h);
+m11.register(d);
+m11.register(s);
+m11.register(b2);
+m11.register(a5);
+
+m12.register(a3);
+m12.register(a4);
+m12.register(h);
+m12.register(d);
+m12.register(s);
+m12.register(b3);
+m12.register(a5);
+
 for (0 => int k; k < 8; ++k) {
     m0.advanceTime();    
 }
@@ -162,7 +202,7 @@ for (0 => int k; k < 4; ++k) {
     }
 }
 
-for (0 => int k; k < 40; ++k) {
+for (0 => int k; k < 4; ++k) {
     for (0 => int i; i < 4; ++i) {
         m7.advanceTime();
     }
@@ -174,6 +214,38 @@ for (0 => int k; k < 40; ++k) {
     for (0 => int i; i < 1; ++i) {
         m9.advanceTime();
     }
+}
+
+for (0 => int k; k < 16; ++k) {
+    for (0 => int i; i < 4; ++i) {
+        m10.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m11.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m12.advanceTime();
+    }
+}
+
+for (0 => int k; k < 4; ++k) {
+    for (0 => int i; i < 2; ++i) {
+        m1.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m2.advanceTime();
+    }
+
+    for (0 => int i; i < 1; ++i) {
+        m3.advanceTime();
+    }
+}
+
+for (0 => int k; k < 8; ++k) {
+    m0.advanceTime();    
 }
 
 fun ck_timesig__Measure createMeasure(ck_timesig__TimeSignature ts) {
@@ -208,6 +280,12 @@ fun NoteSequence createNoteSequence() {
     e @=> a.e;
 
     return a;
+}
+
+fun NoteSequence createLongLastingNoteSequence() {
+    createNoteSequence() @=> NoteSequence @ ns;
+    1::week => ns.tdt;
+    return ns;
 }
 
 fun NoteSequence createDrum() {

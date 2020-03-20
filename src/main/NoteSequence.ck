@@ -2,9 +2,14 @@ public class NoteSequence extends ck_timesig__MeasureListener {
     UGenPreparation up;
     NoteDuration notes[0];
     Envelope e;
+    1::second => dur tdt;
 
     0 => int on;
     0 => int chucked;
+
+    fun dur tearDownTolerance() {
+        return tdt;
+    }
 
     fun void prepare() {
         if (chucked == 0) {
