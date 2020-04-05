@@ -2,6 +2,15 @@ public class UGenChain {
     Gain g;
     [g $ UGen] @=> UGen uGens[];
     
+    fun static UGenChain create() {
+        return new UGenChain;
+    }
+    
+    fun UGenChain withUGen(UGen uGen) {
+        append(uGen);
+        return this;
+    }
+    
     fun void append(UGen uGen) {
         uGens.cap() => int uGensCap;
         

@@ -1,10 +1,48 @@
 public class ChordSequence extends ck_timesig__MeasureListener {
     UGenPreparation up[0];
     ChordDuration chords[0];
+    UGenChain outGates[];
     Envelope e[];
+    Gain g;
+    1::second => dur tdt;
 
     0 => int on;
     0 => int chucked;
+
+    fun static ChordSequence of(UGenPreparation uGens[]) {
+        ChordSequence c;
+        uGens @=> c.up;
+        return c;
+    }
+    
+    fun ChordSequence withChord(Chord c, WaitFunction wb, WaitFunction wd) {
+        addChordDuration(c, wb, wd);
+        return this;
+    }
+    
+    fun ChordSequence withOutGates(UGenChain uGenChains[]) {
+        uGenChains @=> this.outGates;
+        return this;
+    }
+    
+    fun ChordSequence withEnvelopes(Envelope e[]) {
+        e @=> this.e;
+        return this;
+    }
+    
+    fun ChordSequence withGain(float gain) {
+        gain => g.gain;
+        return this;
+    }
+    
+    fun ChordSequence withTearDownTolerance(dur tdt) {
+        tdt => this.tdt;
+        return this;
+    }
+
+    fun dur tearDownTolerance() {
+        return tdt;
+    }
 
     fun void prepare() {
         if (chucked == 0) {
@@ -14,7 +52,8 @@ public class ChordSequence extends ck_timesig__MeasureListener {
             
             for (0 => int i; i < up.cap(); ++i) {
                 up[i].get().gain() / up.cap() => up[i].get().gain;
-                up[i].get() => e[i] => dac;
+                up[i].get() => outGates[i].in();
+                outGates[i].out() => g => e[i] => dac;
             }
             
             1 => chucked;
@@ -24,7 +63,8 @@ public class ChordSequence extends ck_timesig__MeasureListener {
     fun void tearDown() {
         if (on == 0) {
             for (0 => int i; i < up.cap(); ++i) {
-                up[i].get() =< e[i] =< dac;
+                up[i].get() =< outGates[i].in();
+                outGates[i].out() =< g =< e[i] =< dac;
             }
             
             0 => chucked;

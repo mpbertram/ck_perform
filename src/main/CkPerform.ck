@@ -11,6 +11,7 @@
     me.sourceDir() + "/UGenChain.ck",
     me.sourceDir() + "/ModulationFunction.ck",
     me.sourceDir() + "/HalfFreqModulationFunction.ck",
+    me.sourceDir() + "/Osc.ck",
     me.sourceDir() + "/ModulatedOsc.ck",
     me.sourceDir() + "/Noiser.ck",
     me.sourceDir() + "/NoteSequence.ck",
