@@ -2,7 +2,7 @@
  * Based on http://chuck.cs.princeton.edu/doc/examples/basic/rec-auto.ck
  */
 
-dac => Gain g => WvOut w => blackhole;
+dac => Gain g => WvOut2 w => blackhole;
 
 me.dir() + "recs/chuck-session" => w.autoPrefix;
 "special:auto" => w.wavFilename;

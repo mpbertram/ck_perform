@@ -67,7 +67,7 @@ createLongLastingNoteSequence() @=> NoteSequence b1;
 b1.addNoteDuration(Std.mtof(36), w20fb, wn);
 
 createNoteSequence() @=> NoteSequence b2;
-b2.addNoteDuration(Std.mtof(33), w5fb, wn);
+b2.addNoteDuration(Std.mtof(45), w5fb, wn);
 
 createNoteSequence() @=> NoteSequence b3;
 b3.addNoteDuration(Std.mtof(35), w5fb, wn);
@@ -77,8 +77,8 @@ h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], wfb, wn);
 h.addChordDuration([Std.mtof(74), Std.mtof(79), Std.mtof(81)], w4fb, w4fb);
 
 createDrum() @=> NoteSequence @ d;
-d.addNoteDuration(Std.mtof(11), wsfb, w4fb);
-d.addNoteDuration(Std.mtof(11), wsfb, wfb);
+d.addNoteDuration(45, wsfb, w4fb);
+d.addNoteDuration(45, wsfb, wfb);
 
 createSnare() @=> NoteSequence @ s;
 s.addSilence(wfb);
@@ -87,91 +87,99 @@ s.addSilence(wfb);
 s.addNoteDuration(Std.mtof(72), wsfb, wfb);
 s.addSilence(wfb);
 
-m0.register(h.withGain(0.05));
-m0.register(d.withGain(2));
+m0.register(h);
+m0.register(d);
 
-m1.register(a1.withGain(0.2));
-m1.register(h.withGain(0.05));
-m1.register(d.withGain(2));
-m1.register(s.withGain(0.75));
+m1.register(a1);
+m1.register(h);
+m1.register(d);
+m1.register(s);
 
-m2.register(a2.withGain(0.2));
-m2.register(h.withGain(0.05));
-m2.register(d.withGain(2));
-m2.register(s.withGain(0.75));
+m2.register(a2);
+m2.register(h);
+m2.register(d);
+m2.register(s);
 
-m3.register(a3.withGain(0.2));
-m3.register(h.withGain(0.05));
-m3.register(d.withGain(2));
-m3.register(s.withGain(0.75));
+m3.register(a3);
+m3.register(h);
+m3.register(d);
+m3.register(s);
 
-m4.register(a1.withGain(0.2));
-m4.register(a4.withGain(0.2));
-m4.register(h.withGain(0.05));
-m4.register(d.withGain(2));
-m4.register(s.withGain(0.75));
+m4.register(a1);
+m4.register(a4);
+m4.register(h);
+m4.register(d);
+m4.register(s);
 
-m5.register(a2.withGain(0.15));
-m5.register(a4.withGain(0.25));
-m5.register(h.withGain(0.05));
-m5.register(d.withGain(2));
-m5.register(s.withGain(0.75));
+m5.register(a2);
+m5.register(a4);
+m5.register(h);
+m5.register(d);
+m5.register(s);
 
-m6.register(a3.withGain(0.15));
-m6.register(a4.withGain(0.25));
-m6.register(h.withGain(0.05));
-m6.register(d.withGain(2));
-m6.register(s.withGain(0.75));
+m6.register(a3);
+m6.register(a4);
+m6.register(h);
+m6.register(d);
+m6.register(s);
 
-m7.register(a1.withGain(0.10));
-m7.register(a4.withGain(0.15));
-m7.register(h.withGain(0.05));
-m7.register(d.withGain(2));
-m7.register(s.withGain(0.75));
-m7.register(b1.withGain(0.25));
+m7.register(a1);
+m7.register(a4);
+m7.register(h);
+m7.register(d);
+m7.register(s);
+m7.register(b1);
 
-m8.register(a2.withGain(0.10));
-m8.register(a4.withGain(0.15));
-m8.register(h.withGain(0.05));
-m8.register(d.withGain(2));
-m8.register(s.withGain(0.75));
-m8.register(b2.withGain(0.25));
+m8.register(a2);
+m8.register(a4);
+m8.register(h);
+m8.register(d);
+m8.register(s);
+m8.register(b2);
 
-m9.register(a3.withGain(0.10));
-m9.register(a4.withGain(0.15));
-m9.register(h.withGain(0.05));
-m9.register(d.withGain(2));
-m9.register(s.withGain(0.75));
-m9.register(b3.withGain(0.15));
+m9.register(a3);
+m9.register(a4);
+m9.register(h);
+m9.register(d);
+m9.register(s);
+m9.register(b3);
 
-m10.register(a1.withGain(0.05));
-m10.register(a4.withGain(0.1));
-m10.register(h.withGain(0.05));
-m10.register(d.withGain(2));
-m10.register(s.withGain(0.75));
-m10.register(b1.withGain(0.25));
-m10.register(a5.withGain(0.2));
+m10.register(a1);
+m10.register(a4);
+m10.register(h);
+m10.register(d);
+m10.register(s);
+m10.register(b1);
+m10.register(a5);
 
-m11.register(a2.withGain(0.05));
-m11.register(a4.withGain(0.1));
-m11.register(h.withGain(0.05));
-m11.register(d.withGain(2));
-m11.register(s.withGain(0.75));
-m11.register(b2.withGain(0.25));
-m11.register(a5.withGain(0.2));
+m11.register(a2);
+m11.register(a4);
+m11.register(h);
+m11.register(d);
+m11.register(s);
+m11.register(b2);
+m11.register(a5);
 
-m12.register(a3.withGain(0.05));
-m12.register(a4.withGain(0.1));
-m12.register(h.withGain(0.05));
-m12.register(d.withGain(2));
-m12.register(s.withGain(0.75));
-m12.register(b3.withGain(0.15));
-m12.register(a5.withGain(0.2));
+m12.register(a3);
+m12.register(a4);
+m12.register(h);
+m12.register(d);
+m12.register(s);
+m12.register(b3);
+m12.register(a5);
 
+h.withGain(0.0025);
+d.withGain(0.5);
 for (0 => int k; k < 4; ++k) {
     m0.advanceTime();    
 }
 
+a1.withGain(0.1);
+a2.withGain(0.1);
+a3.withGain(0.1);
+h.withGain(0.0025);
+d.withGain(0.5);
+s.withGain(0.2);
 for (0 => int k; k < 2; ++k) {
     for (0 => int i; i < 2; ++i) {
         m1.advanceTime();
@@ -186,6 +194,13 @@ for (0 => int k; k < 2; ++k) {
     }
 }
 
+a1.withGain(0.1);
+a2.withGain(0.1);
+a3.withGain(0.1);
+a4.withGain(0.1);
+h.withGain(0.0025);
+d.withGain(0.5);
+s.withGain(0.2);
 for (0 => int k; k < 2; ++k) {
     for (0 => int i; i < 4; ++i) {
         m4.advanceTime();
@@ -200,7 +215,17 @@ for (0 => int k; k < 2; ++k) {
     }
 }
 
-for (0 => int k; k < 2; ++k) {
+a1.withGain(0.1);
+a2.withGain(0.1);
+a3.withGain(0.1);
+a4.withGain(0.15);
+h.withGain(0.0025);
+d.withGain(0.5);
+s.withGain(0.2);
+b1.withGain(0.2);
+b2.withGain(0.1);
+b3.withGain(0.2);
+for (0 => int k; k < 4; ++k) {
     for (0 => int i; i < 4; ++i) {
         m7.advanceTime();
     }
@@ -214,7 +239,18 @@ for (0 => int k; k < 2; ++k) {
     }
 }
 
-for (0 => int k; k < 8; ++k) {
+a1.withGain(0.1);
+a2.withGain(0.1);
+a3.withGain(0.1);
+a4.withGain(0.15);
+h.withGain(0.0025);
+d.withGain(0.5);
+s.withGain(0.2);
+b1.withGain(0.2);
+b2.withGain(0.1);
+b3.withGain(0.2);
+a5.withGain(0.1);
+for (0 => int k; k < 16; ++k) {
     for (0 => int i; i < 4; ++i) {
         m10.advanceTime();
     }
@@ -228,6 +264,12 @@ for (0 => int k; k < 8; ++k) {
     }
 }
 
+a1.withGain(0.1);
+a2.withGain(0.1);
+a3.withGain(0.1);
+h.withGain(0.0025);
+d.withGain(0.5);
+s.withGain(0.2);
 for (0 => int k; k < 2; ++k) {
     for (0 => int i; i < 2; ++i) {
         m1.advanceTime();
@@ -242,6 +284,8 @@ for (0 => int k; k < 2; ++k) {
     }
 }
 
+h.withGain(0.0025);
+d.withGain(0.5);
 for (0 => int k; k < 4; ++k) {
     m0.advanceTime();    
 }
@@ -264,12 +308,15 @@ fun ck_timesig__TimeSignature createTimeSignature() {
 }
 
 fun NoteSequence createNoteSequence() {
+    JCRev r;
+    .15 => r.mix;
+    
     return NoteSequence.of(Osc.create())
-    .withOutGate(
-        UGenChain.create()
-            .withUGen(new JCRev))
-    .withEnvelope(
-        createAdsr(10::ms, 8::ms, .5, 500::ms));
+        .withOutGate(
+            UGenChain.create()
+                .withUGen(r))
+        .withEnvelope(
+            createAdsr(10::ms, 8::ms, .5, 500::ms));
 }
 
 fun NoteSequence createLongLastingNoteSequence() {
@@ -278,21 +325,15 @@ fun NoteSequence createLongLastingNoteSequence() {
 }
 
 fun NoteSequence createDrum() {
-    return NoteSequence.of(ModulatedOsc.create())
-    .withOutGate(
-        UGenChain.create()
-            .withUGen(new JCRev))
-    .withEnvelope(
-        createAdsr(5::ms, 5::ms, 0.0125, 500::ms));
+   return NoteSequence.of(Osc.create())
+        .withEnvelope(
+            createAdsr(5::ms, 5::ms, 0.025, 125::ms));
 }
 
 fun NoteSequence createSnare() {
     return NoteSequence.of(Osc.create())
-    .withOutGate(
-        UGenChain.create()
-            .withUGen(new JCRev))
-    .withEnvelope(
-        createAdsr(5::ms, 5::ms, 0.005, 10::ms));
+        .withEnvelope(
+            createAdsr(5::ms, 5::ms, 0.005, 25::ms));
 }
 
 fun ChordSequence createChordSequence() {
