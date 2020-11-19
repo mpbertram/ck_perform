@@ -2,6 +2,10 @@ public class Noiser extends UGenPreparation {
     Noise n => Gain g;
     UGenChain outGate;
 
+    fun static Noiser create() {
+        return new Noiser;
+    }
+    
     fun void reset() {
         g =< outGate.in();
         g => outGate.in();

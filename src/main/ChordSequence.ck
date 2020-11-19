@@ -12,6 +12,11 @@ public class ChordSequence extends ck_timesig__MeasureListener {
     fun static ChordSequence of(UGenPreparation uGens[]) {
         ChordSequence c;
         uGens @=> c.up;
+        
+        for (0 => int i; i < c.up.cap(); ++i) {
+            c.up[i].get().gain() / c.up.cap() => c.up[i].get().gain;
+        }
+        
         return c;
     }
     
@@ -51,7 +56,6 @@ public class ChordSequence extends ck_timesig__MeasureListener {
             }
             
             for (0 => int i; i < up.cap(); ++i) {
-                up[i].get().gain() / up.cap() => up[i].get().gain;
                 up[i].get() => outGates[i].in();
                 outGates[i].out() => g => e[i] => dac;
             }

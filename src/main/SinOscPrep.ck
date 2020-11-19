@@ -1,8 +1,8 @@
-public class Osc extends UGenPreparation {
+public class SinOscPrep extends UGenPreparation {
     SinOsc s;
     
-    fun static Osc create() {
-        return new Osc;
+    fun static SinOscPrep create() {
+        return new SinOscPrep;
     }
     
     fun void prepare(Note n) {
