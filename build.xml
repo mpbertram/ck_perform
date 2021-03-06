@@ -13,6 +13,8 @@
   </target>
   
   <target name="extract-lib" depends="clean-lib">
+    <mkdir dir="${lib-src}"/>
+    <get src="https://github.com/mpbertram/ck_timesig/releases/download/v0.3/ck_timesig_v0.3.zip" dest="${lib-src}"/>
     <unzip dest="${lib}">
       <fileset dir="${lib-src}" includes="*.zip"/>
     </unzip>
