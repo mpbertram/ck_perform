@@ -3,10 +3,12 @@
     me.sourceDir() + "/WaitFunction.ck",
     me.sourceDir() + "/WaitFunctions.ck",
     me.sourceDir() + "/WaitFunctionCombination.ck",
+    me.sourceDir() + "/MeasureFunction.ck",
     me.sourceDir() + "/Note.ck",
     me.sourceDir() + "/NoteDuration.ck",
     me.sourceDir() + "/Chord.ck",
     me.sourceDir() + "/ChordDuration.ck",
+    me.sourceDir() + "/MeasureFunctionDuration.ck",
     me.sourceDir() + "/UGenPreparation.ck",
     me.sourceDir() + "/UGenChain.ck",
     me.sourceDir() + "/ModulationFunction.ck",
@@ -17,7 +19,13 @@
     me.sourceDir() + "/ModulatedOsc.ck",
     me.sourceDir() + "/Noiser.ck",
     me.sourceDir() + "/NoteSequence.ck",
-    me.sourceDir() + "/ChordSequence.ck"
+    me.sourceDir() + "/ChordSequence.ck",
+    me.sourceDir() + "/MeasureFunctionSequence.ck",
+    me.sourceDir() + "/FadeFunctionMode.ck",
+    me.sourceDir() + "/FadeFunctionAdding.ck",
+    me.sourceDir() + "/FadeFunctionMultiplying.ck",
+    me.sourceDir() + "/FadeFunctionAbsolute.ck",
+    me.sourceDir() + "/FadeFunction.ck"
 ] @=> string sources[];
 
 for (0 => int i; i < sources.cap(); ++i) {
