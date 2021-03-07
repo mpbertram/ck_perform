@@ -21,7 +21,8 @@
   </target>
   
   <target name="run-test" depends="extract-lib">
-    <exec executable="chuck">
+    <exec executable="chuck" failonerror="true">
+      <arg value="--silent"/>
       <arg value="${test-starter}"/>
     </exec>
   </target>

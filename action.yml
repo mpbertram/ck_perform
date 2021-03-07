@@ -1,0 +1,7 @@
+name: 'CI'
+outputs:
+  build:
+    description: 'Build status'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
