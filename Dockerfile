@@ -22,5 +22,6 @@ RUN git clone --depth 1 https://github.com/ccrma/chuck.git \
 COPY src ${HOME}/src
 COPY build.xml ${HOME}/
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "/entrypoint.sh" ]
