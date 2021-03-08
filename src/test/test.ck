@@ -311,7 +311,7 @@ fun NoteSequence createNoteSequence() {
     JCRev r;
     .15 => r.mix;
     
-    return NoteSequence.of(Osc.create())
+    return NoteSequence.of(SinOscPrep.create())
         .withOutGate(
             UGenChain.create()
                 .withUGen(r))
@@ -325,22 +325,22 @@ fun NoteSequence createLongLastingNoteSequence() {
 }
 
 fun NoteSequence createDrum() {
-   return NoteSequence.of(Osc.create())
+   return NoteSequence.of(SinOscPrep.create())
         .withEnvelope(
             createAdsr(5::ms, 5::ms, 0.025, 125::ms));
 }
 
 fun NoteSequence createSnare() {
-    return NoteSequence.of(Osc.create())
+    return NoteSequence.of(SinOscPrep.create())
         .withEnvelope(
             createAdsr(5::ms, 5::ms, 0.005, 25::ms));
 }
 
 fun ChordSequence createChordSequence() {
     return ChordSequence.of([
-        new Osc $ UGenPreparation, 
-        new Osc $ UGenPreparation, 
-        new Osc $ UGenPreparation])
+        new SinOscPrep $ UGenPreparation, 
+        new SinOscPrep $ UGenPreparation, 
+        new SinOscPrep $ UGenPreparation])
     .withOutGates([
         UGenChain.create().withUGen(new Chorus),
         UGenChain.create().withUGen(new Chorus),
