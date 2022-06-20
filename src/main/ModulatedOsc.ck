@@ -1,49 +1,57 @@
 public class ModulatedOsc extends UGenPreparation {
-    SinOsc v;
-    SinOsc s;
-    HalfFreqModulationFunction f @=> ModulationFunction mf;
+    [
+        Modulation
+            .create()
+            .withOsc(new SinOsc)
+            .withModulationFunction(new HalfFreqModulationFunction)
+            .withGain(100.0)
+    ] @=> Modulation modulations[];
 
-    100 => float vGain;
-    0.05 => float sGain;
+    SinOsc carrier;
+    0.75 => carrier.gain;
 
     fun static ModulatedOsc create() {
         return new ModulatedOsc;
     }
     
-    fun ModulatedOsc withModulationFunction(ModulationFunction mf) {
-        mf @=> this.mf;
+    fun ModulatedOsc withModulations(Modulation modulations[]) {
+        modulations @=> this.modulations;
         return this;
     }
-    
-    fun ModulatedOsc withVibratoGain(float g) {
-        g => vGain;
-        return this;
-    }
-    
-    fun ModulatedOsc withOscGain(float g) {
-        g => sGain;
+
+    fun ModulatedOsc withCarrierGain(float g) {
+        g => carrier.gain;
         return this;
     }
 
     fun void reset() {
-        v =< s;
+        for (0 => int i; i < modulations.cap() - 1; ++i) {
+            modulations[i].s =< modulations[i + 1].s;
+        }
+        modulations[modulations.cap() - 1].s =< carrier;
 
-        2 => s.sync;
+        2 => carrier.sync;
+        for (modulations.cap() - 1 => int i; i > 0; --i) {
+            2 => modulations[i].s.sync;
+        }
 
-        vGain => v.gain;
-        sGain => s.gain;
-
-        v => s;
+        for (0 => int i; i < modulations.cap() - 1; ++i) {
+            modulations[i].s => modulations[i + 1].s;
+        }
+        modulations[modulations.cap() - 1].s => carrier;
     }
 
     fun void prepare(Note n) {
         reset();
 
-        mf.apply(n) => v.freq;
-        n.note => s.freq;
+        for (0 => int i; i < modulations.cap(); ++i) {
+            modulations[i].mf.apply(n) => modulations[i].s.freq;
+        }
+
+        n.note => carrier.freq;
     }
 
     fun UGen get() {
-        return s;
+        return carrier;
     }
 }
